@@ -49,4 +49,4 @@ export ARM64_SHA256=$(shasum -a 256 dist/${NAME}-${VERSION}-darwin-arm64.tar.gz 
 
 echo "[INFO] ARM64_SHA256: ${ARM64_SHA256}"
 
-envsubst < templates/homebrew-tap.rb.tmpl > ../../Formula/$NAME.rb
+envsubst < templates/jw-tap.rb.tmpl > ../../Formula/$NAME.rb

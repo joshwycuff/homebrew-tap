@@ -3,7 +3,7 @@
 export GH_ORG="joshwycuff"
 export GH_REPO="homebrew-tap"
 export NAME="jw-tap"
-export DESC="A helper CLI for the joshwycuff/homebrew-tap repository"
+export DESC="jw-tap: A helper CLI for the joshwycuff/homebrew-tap repository"
 
 if [ ! -d "dist/" ] ; then
   echo "[ERROR] Could not find a dist/ directory" >&2
@@ -41,7 +41,7 @@ if [[ $(gh release view --repo $GH_ORG/$GH_REPO $TAG --json isDraft --jq ".isDra
   exit 1
 fi
 
-export ARM64_URL=$(gh release view --repo $GH_ORG/$GH_REPO $TAG --json assets | jq ".assets[] | select(.name == \"${NAME}-${VERSION}-darwin-arm64.tar.gz\") | .apiUrl" -r)
+export ARM64_URL="https://github.com/${GH_ORG}/${GH_REPO}/releases/download/${NAME}-${VERSION}/${NAME}-${VERSION}-darwin-arm64.tar.gz"
 
 echo "[INFO] ARM64_URL: ${ARM64_URL}"
 

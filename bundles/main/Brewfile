@@ -1,3 +1,4 @@
+brew "1password-cli"
 brew "asdf"
 brew "chezmoi"
 brew "curl"

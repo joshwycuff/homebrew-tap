@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## jw-tap-v0.1.4 - 2025-01-06
+#### Bug Fixes
+- force release - (d322b0d) - Joshua Wycuff
+
+- - -
+
 ## jw-tap-v0.1.3 - 2025-01-06
 #### Bug Fixes
 - force release - (6e03135) - Joshua Wycuff

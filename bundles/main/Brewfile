@@ -1,5 +1,5 @@
 brew "asdf"
-brew "chezmois"
+brew "chezmoi"
 brew "curl"
 brew "fzf"
 brew "gh"

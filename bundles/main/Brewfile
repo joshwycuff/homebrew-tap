@@ -10,3 +10,5 @@ brew "starship"
 brew "uv"
 brew "wget"
 brew "zsh"
+
+cask "1password"

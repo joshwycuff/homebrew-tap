@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## v0.3.0 - 2025-01-06
+### Package updates
+- jw-tap bumped to jw-tap-v0.1.5
+### Global changes
+#### Features
+- update jw-tap formula - (9f5eedd) - github-actions[bot]
+
+- - -
+
 ## v0.2.0 - 2025-01-06
 ### Package updates
 - jw-tap bumped to jw-tap-v0.1.4

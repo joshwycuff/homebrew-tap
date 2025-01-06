@@ -1,0 +1,11 @@
+branch_whitelist = ["main"]
+from_latest_tag = true
+generate_mono_repository_global_tag = true
+generate_mono_repository_package_tags = true
+monorepo_version_separator = "-"
+tag_prefix = "v"
+
+[packages]
+[packages.jw-tap]
+path = "applications/jw-tap"
+ignore = ["applications/jw-tap/.gitignore", "applications/jw-tap/scripts/**"]

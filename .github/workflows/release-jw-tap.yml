@@ -1,0 +1,96 @@
+name: Release jw-tap
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Fetch the entire Git history
+
+      - name: Set up Git User
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      # Install Cocogitto
+      - name: Install Cocogitto
+        run: |
+          curl -sSL https://github.com/cocogitto/cocogitto/releases/download/6.2.0/cocogitto-6.2.0-x86_64-unknown-linux-musl.tar.gz  -o cog.tar.gz
+          tar -xzf cog.tar.gz
+          chmod +x x86_64-unknown-linux-musl/cog
+          sudo mv x86_64-unknown-linux-musl/cog /usr/local/bin/
+          rm cog.tar.gz
+          rm -fr x86_64-unknown-linux-musl/
+          cog --version
+
+      # Install Github CLI
+      - name: Install Github CLI
+        run: |
+          curl -sSL https://github.com/cli/cli/releases/download/v2.63.2/gh_2.63.2_linux_amd64.tar.gz -o gh.tar.gz
+          tar -xzf gh.tar.gz
+          chmod +x gh_2.63.2_linux_amd64/bin/gh
+          sudo mv gh_2.63.2_linux_amd64/bin/gh /usr/local/bin/
+          rm gh.tar.gz
+          rm -fr gh_2.63.2_linux_amd64/
+          gh --version
+
+      - name: Check for Version Bump
+        run: |
+          OUTPUT=$(cog bump --auto --dry-run)
+          echo "$OUTPUT"
+          if [[ "$OUTPUT" != *"No conventional commits found"* ]]; then
+            echo "bump=true" >> $GITHUB_ENV
+          else
+            echo "bump=false" >> $GITHUB_ENV
+          fi
+
+      # Run the version bump
+      - name: Run the version bump
+        if: env.bump == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub token for authentication
+        run: |
+          cog bump --auto
+          git push --tags
+
+      # Run the build script
+      - name: Run Build Script
+        if: env.bump == 'true'
+        working-directory: applications/jw-tap/
+        run: ./scripts/build.sh
+
+      # Run the release script to create the GitHub release and upload assets
+      - name: Run Release Script
+        if: env.bump == 'true'
+        working-directory: applications/jw-tap/
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub token for authentication
+        run: ./scripts/release.sh
+
+      # Generate the Homebrew formula
+      - name: Generate Homebrew Formula
+        if: env.bump == 'true'
+        working-directory: applications/jw-tap/
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub token for authentication
+        run: |
+          ./scripts/formula.sh
+
+      # Publish the Homebrew formula
+      - name: Publish Homebrew Formula
+        if: env.bump == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub token for authentication
+        run: |
+          git add ./Formula/jw-tap.rb
+          git commit -m "feat: update jw-tap formula"
+          git push
